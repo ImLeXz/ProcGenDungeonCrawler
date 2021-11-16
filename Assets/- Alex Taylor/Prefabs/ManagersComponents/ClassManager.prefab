@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5062455090095121905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5062455090095121904}
+  - component: {fileID: 5062455090095121907}
+  m_Layer: 0
+  m_Name: ClassManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5062455090095121904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5062455090095121905}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5062455090095121907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5062455090095121905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e66f8c3b0b06744864a06db1bc00a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerClasses:
+  - className: Rogue
+    classIcon: {fileID: 0}
+    defaultWeaponPrefab: {fileID: 5879303840666430089, guid: 2dedc41f6d27dd6488e16bc65c056b82, type: 3}
+    defaultItem01Prefab: {fileID: 4813691086393443487, guid: 918f4234506890a48a12e08d4e8808f1, type: 3}
+    defaultItem02Prefab: {fileID: 4813691086393443487, guid: ec24e1f48c006f649a8c3c1f8912e9e7, type: 3}
+    otherClassInfoLines:
+    - '- Increase Movement Speed'
+    - '- Lower Health'
+    - '- Auto Bunny-Hop'
+    - '- Increased Damage'
+  - className: Tank
+    classIcon: {fileID: 0}
+    defaultWeaponPrefab: {fileID: 5879303840666430089, guid: 2dedc41f6d27dd6488e16bc65c056b82, type: 3}
+    defaultItem01Prefab: {fileID: 4813691086393443487, guid: e854d32ab051e9f4496871655fb0d435, type: 3}
+    defaultItem02Prefab: {fileID: 4813691086393443487, guid: 2454ffc82a37b5849bb35b1547ef79be, type: 3}
+    otherClassInfoLines:
+    - '- Increased Health'
+    - '- Increased Shield'
+    - '- Much Slower Movement Speed'
+    - '- Average Damage'

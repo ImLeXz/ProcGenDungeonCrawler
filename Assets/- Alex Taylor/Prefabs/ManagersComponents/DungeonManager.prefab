@@ -1,0 +1,191 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5285555939987783532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5285555939987783533}
+  - component: {fileID: 5285555939987783522}
+  m_Layer: 0
+  m_Name: DungeonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5285555939987783533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5285555939987783532}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5285555939987783522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5285555939987783532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a5e17b1e77c4c4fbbe6d06cd85dbb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomsParent: {fileID: 0}
+  navMeshComponent: {fileID: 0}
+  maxRooms: 80
+  maxRoomSpawnAttempts: 20
+  roomSetupDelay: 0.15
+  delayBetweenAttempts: 0.001
+  roomValidationDelay: 0.05
+  delayTillCompletionIsTrue: 3.5
+  frequencyPercentageMultiplier: 100
+  maxQuantityMultiplier: 1
+  lockedRoomBlackList: 0300000004000000050000000a0000000b000000
+  chanceToLockRoom: 0.2
+  lockedRoomKeyPrefab: {fileID: 1655737706066354973, guid: e0f20c2d1203c704788f1bc80345b069, type: 3}
+  loopSpawner: {fileID: 0}
+  loopWaitTime: 0.25
+  maxLoopDistance: 50
+  connectionPieces:
+  - roomType: 0
+    prefabs:
+    - {fileID: 6751821825454342469, guid: f0aaea7ed8abb284fbc7a8a45348b2b1, type: 3}
+    - {fileID: 2405139607412366334, guid: 21856b4474c39d441bd837004da73879, type: 3}
+    frequencyPercentage: 0.65
+    maxQuantity: 10
+    curQuantity: 0
+    validConnectionTypes: 0300000004000000
+  - roomType: 1
+    prefabs:
+    - {fileID: 5987523526269686165, guid: f50a46599164d5148b5be45ed5aa4560, type: 3}
+    - {fileID: 2156114481022079756, guid: 6941411eddd1fa440a8eb93bf8512a90, type: 3}
+    - {fileID: 1928793557716562590, guid: 8e29cee866ad6fe418dc3e2b6532548f, type: 3}
+    - {fileID: 7220866076151590465, guid: ed0a446ee84463e44813187f101a1d28, type: 3}
+    - {fileID: 827400692077197567, guid: 16e84cc5c4cf8a1479f09cc91036ed3c, type: 3}
+    - {fileID: 576629059979057397, guid: 852fcd4744929c64e88f6cb12e01efcf, type: 3}
+    - {fileID: 6620537868170418212, guid: bf23c10943ce150468c7a3cc931d58d5, type: 3}
+    - {fileID: 2477890535733272010, guid: 77926a1a70b37f64ca5ffe9379b51690, type: 3}
+    - {fileID: 300168895532355223, guid: 8316183e764b8c44980d5949bcf57e22, type: 3}
+    frequencyPercentage: 0.85
+    maxQuantity: 25
+    curQuantity: 0
+    validConnectionTypes: 0300000004000000
+  - roomType: 2
+    prefabs:
+    - {fileID: 8185796656785630528, guid: 664a3b16c0c9f194f81832b7e9564956, type: 3}
+    frequencyPercentage: 0.15
+    maxQuantity: 5
+    curQuantity: 0
+    validConnectionTypes: 03000000
+  - roomType: 3
+    prefabs:
+    - {fileID: 7009939387415265911, guid: 85560a725d884f64ebf59ddbd0603a27, type: 3}
+    - {fileID: 2661212453408109389, guid: 04c476b48a3be2b4e9f6af6dcb3a4e15, type: 3}
+    - {fileID: 2851481093962603290, guid: df76400d2c9f53549bd2c8b58fa289df, type: 3}
+    frequencyPercentage: 1
+    maxQuantity: 500
+    curQuantity: 0
+    validConnectionTypes: 00000000010000000200000005000000070000000800000006000000
+  - roomType: 4
+    prefabs:
+    - {fileID: 2121717003393891574, guid: 470b22b28e52eb44882b973fe35fc449, type: 3}
+    - {fileID: 59748273185828492, guid: 685d249e0ddb09b4e94a8bba9d96c91d, type: 3}
+    - {fileID: 6751818430003787574, guid: 0ad5f78d6cba87944bd3831c87596db8, type: 3}
+    - {fileID: 6237056337080317308, guid: 575634e8e7e095148954c91dee5c07d2, type: 3}
+    - {fileID: 2452939366869826714, guid: 715d7f4cf6aed9b47b169ecae3f2016e, type: 3}
+    - {fileID: 1981084593915884986, guid: e13caca1d454ad043a3880535e406ac4, type: 3}
+    - {fileID: 4798683667424494607, guid: 94f40fc1c09b918469f0c8e9fdd2c8e5, type: 3}
+    - {fileID: 6250601829322726196, guid: 87e1f6b437676b949be5b6fcb1457b5a, type: 3}
+    - {fileID: 6435589674631682173, guid: 954729fe9f27ffe458d2238ec0f2e04a, type: 3}
+    - {fileID: 1981084593915884986, guid: e13caca1d454ad043a3880535e406ac4, type: 3}
+    - {fileID: 6250601829322726196, guid: 87e1f6b437676b949be5b6fcb1457b5a, type: 3}
+    - {fileID: 6435589674631682173, guid: 954729fe9f27ffe458d2238ec0f2e04a, type: 3}
+    - {fileID: 4798683667424494607, guid: 94f40fc1c09b918469f0c8e9fdd2c8e5, type: 3}
+    frequencyPercentage: 0.25
+    maxQuantity: 35
+    curQuantity: 0
+    validConnectionTypes: 0000000001000000
+  - roomType: 5
+    prefabs:
+    - {fileID: 7830633320310995194, guid: 1ade24e6042c53a40aaca994a93ff1b1, type: 3}
+    frequencyPercentage: 1
+    maxQuantity: 1
+    curQuantity: 0
+    validConnectionTypes: 03000000
+  - roomType: 6
+    prefabs:
+    - {fileID: 2156114481022079756, guid: ba6a5bb1bf523aa42af42279a8e0dcc1, type: 3}
+    frequencyPercentage: 0.2
+    maxQuantity: 1
+    curQuantity: 0
+    validConnectionTypes: 03000000
+  - roomType: 7
+    prefabs:
+    - {fileID: 2692606878016274507, guid: 157410e13e48a3140a9a4e7872e5f6d2, type: 3}
+    frequencyPercentage: 0.2
+    maxQuantity: 1
+    curQuantity: 0
+    validConnectionTypes: 03000000
+  - roomType: 8
+    prefabs:
+    - {fileID: 2692606878016274507, guid: 180e68d205cd02d45bf65aad5770a2f4, type: 3}
+    frequencyPercentage: 0.2
+    maxQuantity: 1
+    curQuantity: 0
+    validConnectionTypes: 03000000
+  - roomType: 9
+    prefabs:
+    - {fileID: 8520573133783602055, guid: 92fdf5bf7d123cc48a740c989777d895, type: 3}
+    frequencyPercentage: 0
+    maxQuantity: 1
+    curQuantity: 0
+    validConnectionTypes: 
+  - roomType: 10
+    prefabs:
+    - {fileID: 5545213727793923353, guid: a865ce32c3f6b42428eafe9acc9780b9, type: 3}
+    frequencyPercentage: 0
+    maxQuantity: 1
+    curQuantity: 1
+    validConnectionTypes: 03000000
+  - roomType: 11
+    prefabs: []
+    frequencyPercentage: 1
+    maxQuantity: 0
+    curQuantity: 0
+    validConnectionTypes: 
+  closerObj: {fileID: 1205382865162003685, guid: 04cb00664d19a364eb27819f296a333e, type: 3}
+  teleportObj: {fileID: 1205382865162003685, guid: 5fcfc7e7241b8b440a417a3dc406bd80, type: 3}
+  lockedRoomObj: {fileID: 1205382865162003685, guid: acf11febf7e309b4babf852970a3ae41, type: 3}
+  validatorObj: {fileID: 5184686651865297786, guid: 569cb22c3026d5b41a34aad29e313417, type: 3}
+  playerSpawnTransform: {fileID: 0}
+  roomTriggerScale: {x: 0.5, y: 2.65, z: 1.75}
+  enableWhenComplete: {fileID: 0}
+  itemSpawnParent: {fileID: 0}
+  chestObjects:
+  - prefab: {fileID: 7324047081030537843, guid: 8197db8a25ec0644285e6d456cccce78, type: 3}
+    frequencyPercentage: 0.4
+    spawnPoint: {fileID: 0}
+  - prefab: {fileID: 7324047081030537843, guid: 7be01beadd2a93940b8905dd14bf8f9a, type: 3}
+    frequencyPercentage: 0.3
+    spawnPoint: {fileID: 0}
+  crateObjects:
+  - prefab: {fileID: 6081418289325410860, guid: c88e2410461d94948a71eda43aa07d7e, type: 3}
+    frequencyPercentage: 0.5
+    spawnPoint: {fileID: 0}
+  isDebugMode: 0
+  shouldCheckValidators: 0
+  shouldCleanupSpawnerUtils: 0
+  connectionPointOverlapRadius: 1.2

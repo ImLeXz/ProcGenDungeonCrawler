@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Validator
+  - ConnectionPoint
+  - Enemy
+  - ChestSpawn
+  - HitBox
+  - Projectile
+  - Weapon
+  - Item
+  - CPDetector
+  - Trigger
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PostProcessing
+  - Validator
+  - ConnectionPoint
+  - Player
+  - Pickup
+  - Enemy
+  - HitBoxPlayer
+  - ProjectilePlayer
+  - HitBoxEnemy
+  - ProjectileEnemy
+  - Trigger
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
