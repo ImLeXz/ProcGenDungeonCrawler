@@ -26,6 +26,8 @@ namespace ATDungeon.Enemies
 
         [Header("Attack Settings")]
         [SerializeField]
+        private float spawnGracePeriod = 1.5f;
+        [SerializeField]
         private float distanceToStartAttacking;
         [SerializeField]
         private float aimingThreshold = 25.0f;
@@ -56,6 +58,7 @@ namespace ATDungeon.Enemies
         Vector3 direction;
         private float moveSpeed = 1.0f;
         AimConstraint aimConstraint;
+        private bool gracePeriodEnded;
 
         bool bIsDead = false;
 
@@ -80,6 +83,16 @@ namespace ATDungeon.Enemies
         {
             EnemyAction();
             WeaponSwitchInterval();
+            if(!gracePeriodEnded) GracePeriod();
+        }
+
+        private void GracePeriod()
+        {
+            spawnGracePeriod -= Time.deltaTime;
+            if (spawnGracePeriod <= 0f)
+            {
+                gracePeriodEnded = true;
+            }
         }
 
         private void WeaponSwitchInterval()
@@ -100,17 +113,23 @@ namespace ATDungeon.Enemies
         {
             Vector3 playerPos = UtilFunctions.instance.GetPlayerPos();
             float distanceToPlayer = Vector3.Distance(transform.position, playerPos);
+            
             if (distanceToPlayer <= followDistance && distanceToPlayer > stopDistanceFromPlayer)
             {
                 aimConstraint.constraintActive = false;
                 agent.SetDestination(playerPos);
             }
+            
             else
+            {
                 aimConstraint.constraintActive = true;
+            }
 
 
-            if (IsFacingPlayer(playerPos) && distanceToPlayer <= distanceToStartAttacking)
+            if (IsFacingPlayer(playerPos) && distanceToPlayer <= distanceToStartAttacking && gracePeriodEnded)
+            {
                 weaponHandler.Shoot(true);
+            }
         }
 
         private void AdjustDifficulty()

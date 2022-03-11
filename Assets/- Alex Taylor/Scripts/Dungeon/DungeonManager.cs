@@ -134,6 +134,7 @@ namespace ATDungeon.Dungeon
         private bool hasMaxRoomsSpawned = false;
         private float minLoopDistance;
         const int maxLockedRooms = 4; //If this is changed, UI for keys needs changing
+        private List<int> lockedRoomNumbers = new List<int>();
 
         private void Awake()
         {
@@ -218,79 +219,87 @@ namespace ATDungeon.Dungeon
                 bool isBossRoom = false;
                 ConnectionPoint teleportPoint = SpawnTeleport(finalRoom); //Spawn Teleport To Next Stage In Final Room
                 //Room Spawner Loop Start
-                foreach (RoomSpawner rs in spawnedRooms)
+                for (int i = 0; i < spawnedRooms.Count; i++)
                 {
                     try
                     {
                         isBossRoom = false;
-                        rs.gameObject.transform.parent = roomsParent.transform;
-                        DungeonRoom dr = rs.gameObject.AddComponent<DungeonRoom>();
-                        if (rs == bossRoom)
+                        spawnedRooms[i].gameObject.transform.parent = roomsParent.transform;
+                        DungeonRoom dr = spawnedRooms[i].gameObject.AddComponent<DungeonRoom>();
+                        if (spawnedRooms[i] == bossRoom)
                             isBossRoom = true;
 
-                        if (shouldCleanupSpawnerUtils && rs.Validators != null)
-                            foreach (Validator v in rs.Validators)
+                        if (shouldCleanupSpawnerUtils && spawnedRooms[i].Validators != null)
+                            foreach (Validator v in spawnedRooms[i].Validators)
                                 trashCan.Add(v.gameObject);
 
-                        ConnectionPoint[] connectionPoints = rs.ConnectionPoints;
+                        ConnectionPoint[] connectionPoints = spawnedRooms[i].ConnectionPoints;
                         List<GameObject> lockedRoomObjects = new List<GameObject>();
                         if (connectionPoints != null)
                         {
-                            bool bLockRoom = RandomLockRoom(rs, dr); //Randomly Locks Room And Returns Whether Room Was Locked
+                            bool bLockRoom = RandomLockRoom(spawnedRooms[i], dr); //Randomly Locks Room And Returns Whether Room Was Locked
+                            if (bLockRoom)
+                            {
+                                lockedRoomNumbers.Add(i);
+                            }
 
                             //Connection Point Loop Start
-                            for (int i = 0; i < connectionPoints.Length; i++)
+                            for (int j = 0; j < connectionPoints.Length; j++)
                             {
 
                                 //Generate Closer Walls
-                                if (!connectionPoints[i].IsConnected && connectionPoints[i].GetBlockType() == ConnectionPoint.BlockType.Unblocked)
+                                if (!connectionPoints[j].IsConnected && connectionPoints[j].GetBlockType() == ConnectionPoint.BlockType.Unblocked)
                                 {
-                                    GameObject wall = connectionPoints[i].SpawnWall(closerObj);
-                                    connectionPoints[i].SetBlockType(ConnectionPoint.BlockType.Wall);
+                                    GameObject wall = connectionPoints[j].SpawnWall(closerObj);
+                                    connectionPoints[j].SetBlockType(ConnectionPoint.BlockType.Wall);
                                     wallsSpawned++;
                                 }
                                 //Generate Closer Walls End
 
                                 //Generate Locked Room Walls
-                                else if (bLockRoom && connectionPoints[i].GetBlockType() == ConnectionPoint.BlockType.Unblocked)
+                                else if (bLockRoom && connectionPoints[j].GetBlockType() == ConnectionPoint.BlockType.Unblocked)
                                 {
-                                    GameObject lockedRoomWall = connectionPoints[i].SpawnWall(lockedRoomObj);
+                                    GameObject lockedRoomWall = connectionPoints[j].SpawnWall(lockedRoomObj);
                                     LockedWall lockedWall = lockedRoomWall.GetComponentInChildren<LockedWall>();
                                     lockedWall.SetDungeonRoom(dr);
                                     lockedWall.SetLockedWallID(keysNeeded);
                                     lockedRoomObjects.Add(lockedRoomWall);
-                                    connectionPoints[i].SetBlockType(ConnectionPoint.BlockType.Locked);
+                                    connectionPoints[j].SetBlockType(ConnectionPoint.BlockType.Locked);
                                 }
                                 //Generating Lock Walls End
 
                                 //Final Validation Check To Make Sure No Gaps Are Present
-                                else if (connectionPoints[i] != teleportPoint)
+                                else if (connectionPoints[j] != teleportPoint)
                                 {
-                                    Collider[] overlaps = Physics.OverlapSphere(connectionPoints[i].gameObject.transform.position, connectionPointOverlapRadius);
+                                    Collider[] overlaps = Physics.OverlapSphere(connectionPoints[j].gameObject.transform.position, connectionPointOverlapRadius);
                                     bool isValid = false;
                                     foreach (Collider overlap in overlaps)
-                                        if (overlap.gameObject.tag == "ConnectionPoint" && overlap.gameObject != connectionPoints[i].gameObject)
+                                        if (overlap.gameObject.tag == "ConnectionPoint" && overlap.gameObject != connectionPoints[j].gameObject)
                                             isValid = true;
                                     if (!isValid)
                                     {
-                                        Debug.LogWarning("Found Invalid Connection At [" + connectionPoints[i].gameObject.name + " / " + connectionPoints[i].GetRoomSpawner().gameObject.name + "] Spawning Extra Wall!");
+                                        Debug.LogWarning("Found Invalid Connection At [" + connectionPoints[j].gameObject.name + " / " + connectionPoints[j].GetRoomSpawner().gameObject.name + "] Spawning Extra Wall!");
                                         if (isDebugMode)
-                                            UtilFunctions.instance.DebugDrawMessage("Found Invalid Connection At[" + connectionPoints[i].gameObject.name + " / " + connectionPoints[i].GetRoomSpawner().gameObject.name + "]", connectionPoints[i].gameObject.transform.position);
-                                        GameObject wall = connectionPoints[i].SpawnWall(closerObj);
+                                            UtilFunctions.instance.DebugDrawMessage("Found Invalid Connection At[" + connectionPoints[j].gameObject.name + " / " + connectionPoints[j].GetRoomSpawner().gameObject.name + "]", connectionPoints[j].gameObject.transform.position);
+                                        GameObject wall = connectionPoints[j].SpawnWall(closerObj);
                                         wallsSpawned++;
                                     }
                                 }
 
                                 if (shouldCleanupSpawnerUtils)
-                                    trashCan.Add(connectionPoints[i].gameObject);
+                                    trashCan.Add(connectionPoints[j].gameObject);
                             }
                             //Connection Point Loop End
+                            
                         } // Connection Point Null Check End
-                        SetupDungeonRoom(dr, rs, lockedRoomObjects.ToArray(), isBossRoom);
+                        
+                        SetupDungeonRoom(dr, spawnedRooms[i], lockedRoomObjects.ToArray(), isBossRoom);
+                        
                     }
+                    
                     catch(Exception e)
                     {
-                        Debug.LogError("Exception Thrown Setting Up: [" + rs.gameObject.name + "] - " + e);
+                        Debug.LogError("Exception Thrown Setting Up: [" + spawnedRooms[i].gameObject.name + "] - " + e);
                         bExceptionThrown = true;
                     }
                 }
@@ -381,15 +390,44 @@ namespace ATDungeon.Dungeon
 
         private void SpawnKeys()
         {
-            GameObject[] keysArray = new GameObject[keysNeeded];
             GameObject keysParent = new GameObject("Keys Parent");
             keysParent.transform.parent = this.transform;
+            Debug.Log("Keys Needed: " + keysNeeded);
+            Debug.Log("Locked Rooms: " + lockedRoomNumbers.Count);
             for (int i = 0; i < keysNeeded; i++)
             {
-                Debug.Log("Spawning Key: [" + (i + 1) + " / " + keysNeeded + "]");
+                Debug.Log("------Spawning Key: [" + (i + 1) + " / " + keysNeeded + "]------");
                 GameObject key = Instantiate(lockedRoomKeyPrefab, keysParent.transform);
+
+                RoomSpawner chosenRoom = null;
+                int randomRoomNum = 0;
+                int roomChooseAttempts = 0;
+                do
+                {
+                    randomRoomNum = UnityEngine.Random.Range(0, lockedRoomNumbers[i]);
+                    Debug.Log("Attempting To Get Room At Number: " + randomRoomNum);
+                    chosenRoom = spawnedRooms[randomRoomNum];
+                    roomChooseAttempts++;
+                } while (chosenRoom.RoomType == RoomType.LoopingPath && roomChooseAttempts < lockedRoomNumbers[i]);
+
+                if (chosenRoom == null)
+                {
+                    Debug.LogError("Chosen Room Was NULL, Setting It To Default Value");
+                    chosenRoom = spawnedRooms[lockedRoomNumbers[i] - 1];
+                }
+
+                Debug.Log("Positioning Key In Room [" + randomRoomNum + "]: " + chosenRoom.gameObject.name);
+                Validator randValidator = chosenRoom.Validators[UnityEngine.Random.Range(0, chosenRoom.Validators.Length)];
+                Bounds bounds = randValidator.ValidatorCollider.bounds;
+                Vector3 center = bounds.center;
+                float radius = bounds.extents.magnitude;
+                Vector3 keyPosition = UtilFunctions.instance.RandomNavmeshLocation(radius / 2, center);
+                Debug.Log("Setting Key Position To: " + keyPosition);
+                key.transform.localPosition = new Vector3(keyPosition.x, keyPosition.y + .5f, keyPosition.z);
+
                 LockedRoomKey lrk = key.GetComponent<LockedRoomKey>();
                 lrk.SetKeyID(i + 1);
+                Debug.Log("------------------------");
             }
         }
 
@@ -525,7 +563,8 @@ namespace ATDungeon.Dungeon
                 if (isBossRoom)
                     dr.SetIsBossRoom(true);
 
-                Bounds bounds = rs.GetMesh().bounds;
+                Validator randomValidator = rs.Validators[UnityEngine.Random.Range(0, rs.Validators.Length)];
+                Bounds bounds = randomValidator.ValidatorCollider.bounds;
                 Vector3 center = bounds.center;
                 float radius = bounds.extents.magnitude;
                 int spNum = EnemyManager.Instance.GetSP(rs.RoomType);

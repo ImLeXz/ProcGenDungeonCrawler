@@ -1638,7 +1638,7 @@ MonoBehaviour:
   roomsParent: {fileID: 665499794}
   scoreNeededToTeleportOffset: 100
   navMeshComponent: {fileID: 665190376}
-  maxRooms: 12
+  maxRooms: 20
   maxRoomSpawnAttempts: 20
   roomSetupDelay: 0.15
   delayBetweenAttempts: 0.001
@@ -1647,7 +1647,7 @@ MonoBehaviour:
   frequencyPercentageMultiplier: 100
   maxQuantityMultiplier: 1
   lockedRoomBlackList: 0300000004000000050000000a0000000b000000
-  chanceToLockRoom: 0.2
+  chanceToLockRoom: 0.45
   lockedRoomKeyPrefab: {fileID: 1655737706066354973, guid: e0f20c2d1203c704788f1bc80345b069, type: 3}
   loopSpawner: {fileID: 3289857641065074274}
   loopWaitTime: 0.25

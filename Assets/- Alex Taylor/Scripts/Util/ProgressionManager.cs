@@ -6,6 +6,13 @@ namespace ATDungeon.Progression
 {
     public class ProgressionManager : MonoBehaviour
     {
+        public enum DifficultyOption
+        {
+            Easy,
+            Normal,
+            Hard
+        };
+        
         public static ProgressionManager Instance;
 
         [Header("Difficulty Modifiers")]
@@ -15,6 +22,12 @@ namespace ATDungeon.Progression
         private int enemyHealthIncrease = 10;
         [SerializeField]
         private float enemyDamageMultiplierIncrease = 0.15f;
+        
+        [Space(10)]
+        [SerializeField] private DifficultyOption selectedDifficulty;
+        [SerializeField] private float easyDamageMultiplier;
+        [SerializeField] private float normalDamageMultiplier;
+        [SerializeField] private float hardDamageMultiplier;
 
         [Header("Score Modifiers")]
         [SerializeField]
@@ -33,16 +46,19 @@ namespace ATDungeon.Progression
             Instance = this;
         }
 
-        // Start is called before the first frame update
-        void Start()
+        public float CalculateEnemyDamageMultiplier()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            switch (selectedDifficulty)
+            {
+                case DifficultyOption.Easy:
+                    return easyDamageMultiplier;
+                case DifficultyOption.Normal:
+                    return normalDamageMultiplier;
+                case DifficultyOption.Hard:
+                    return hardDamageMultiplier;
+                default:
+                    return 0f;
+            }
         }
 
         //Difficulty

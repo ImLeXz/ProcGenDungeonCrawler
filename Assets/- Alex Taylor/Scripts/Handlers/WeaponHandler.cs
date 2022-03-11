@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ATDungeon.Weapons;
 using System;
+using ATDungeon.Progression;
 
 namespace ATDungeon.Handlers
 {
@@ -36,13 +37,18 @@ namespace ATDungeon.Handlers
                 {
                     GameObject weaponObj = Instantiate(weaponsList[i], this.transform);
                     WeaponBase wb = weaponObj.GetComponent<WeaponBase>();
+                    
+                    /*
                     wb.SetWeaponHandler(this);
                     wb.SetIsEnemyFiringThis(isEnemy);
                     wb.SetInfiniteAmmo(bInfiniteAmmo);
                     wb.SetCallback(ReloadCallback);
                     wb.Initialise();
-                    instantiatedObjects.Add(weaponObj);
                     currentWeaponCount++;
+                    */
+                    SetupWeapon(wb);
+                    
+                    instantiatedObjects.Add(weaponObj);
                 }
                 else
                 {
@@ -53,6 +59,7 @@ namespace ATDungeon.Handlers
             weaponsList = instantiatedObjects;
             currentWeapon = weaponsList[0];
             maxWeaponCount = weaponsList.Count;
+
             if (currentWeapon)
             {
                 currentWB = currentWeapon.GetComponent<WeaponBase>();
@@ -61,15 +68,27 @@ namespace ATDungeon.Handlers
             }
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void SetupWeapon(WeaponBase wb)
         {
-        }
+            wb.SetWeaponHandler(this);
+            wb.SetIsEnemyFiringThis(isEnemy);
+            wb.SetInfiniteAmmo(bInfiniteAmmo);
+            wb.SetCallback(ReloadCallback);
+            wb.Initialise();
+            
+            if (isEnemy)
+            {
+                float difficultyDamageMultipler = ProgressionManager.Instance.CalculateEnemyDamageMultiplier();
+                overallDamageMultiplier *= difficultyDamageMultipler;
+                Debug.Log("Adjusted DamageMult For Enemy In Relation To Difficulty, New Damage Mult: " + overallDamageMultiplier);
+            }
 
-        // Update is called once per frame
-        void Update()
-        {
+            float newDamageMult = (wb.GetDamageMultiplier() * overallDamageMultiplier) - wb.GetDamageMultiplier();
+            Debug.Log(wb.GetDamageMultiplier() + " x " + overallDamageMultiplier + " - " + wb.GetDamageMultiplier());
+            wb.ModifyDamageMultiplierBy(newDamageMult);
+            Debug.Log("New Damage After Damage Multiplier: [" + newDamageMult + "]");
 
+            currentWeaponCount++;
         }
 
         public delegate void ReloadCompletedCallBack(int weaponNum, Sprite weaponIcon, int magAmmo, int reserveAmmo);
@@ -129,6 +148,8 @@ namespace ATDungeon.Handlers
                     if (!Utility.UtilFunctions.instance.CheckIfPrefab(weapon))
                         Destroy(weapon);
                     WeaponBase wb = weaponsList[i].GetComponent<WeaponBase>();
+                    
+                    /*
                     wb.SetWeaponHandler(this);
                     wb.SetCallback(ReloadCallback);
                     wb.Initialise();
@@ -137,6 +158,9 @@ namespace ATDungeon.Handlers
                     wb.ModifyDamageMultiplierBy(newDamageMult);
                     Debug.Log("New Damage After Damage Multiplier: [" + newDamageMult + "]");
                     currentWeaponCount++;
+                    */
+                    SetupWeapon(wb);
+                    
                     SwitchWeapon(i);
                     weaponEquiped = true;
                     break;

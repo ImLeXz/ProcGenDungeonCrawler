@@ -275,9 +275,14 @@ MonoBehaviour:
   additionalRoomsPerClear: 10
   enemyHealthIncrease: 10
   enemyDamageMultiplierIncrease: 0.15
+  selectedDifficulty: 1
+  easyDamageMultiplier: 0.45
+  normalDamageMultiplier: 0.65
+  hardDamageMultiplier: 0.9
   scorePerEnemy: 50
   scorePerBoss: 500
   scorePerFloorClear: 1000
+  scoreNeededToTeleport: 0
 --- !u!4 &935926211
 Transform:
   m_ObjectHideFlags: 0

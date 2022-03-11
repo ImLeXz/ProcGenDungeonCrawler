@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Microsoft.SqlServer.Server;
 using UnityEngine;
 
 namespace ATDungeon.Dungeon.Setup
@@ -8,6 +9,10 @@ namespace ATDungeon.Dungeon.Setup
     {
         private bool isValid = true;
         private bool checkIsValid = false;
+
+        private Collider validatorCollider;
+
+        public Collider ValidatorCollider => validatorCollider;
 
         private void Start()
         {
@@ -19,6 +24,8 @@ namespace ATDungeon.Dungeon.Setup
                 if (parentRenderer)
                     parentRenderer.enabled = false;
             }
+
+            validatorCollider = this.GetComponent<Collider>();
         }
 
         public void StartValidationChecks() { checkIsValid = true; }
@@ -31,15 +38,20 @@ namespace ATDungeon.Dungeon.Setup
 
         private void OnCollisionStay(Collision collision)
         {
-            if (checkIsValid)
-                foreach (var c in collision.contacts)
-                    if (collision.gameObject.tag == "Validator")
+            if (!checkIsValid) return;
+            
+            foreach (var c in collision.contacts)
+            {
+                if (collision.gameObject.tag == "Validator")
+                {
+                    isValid = false;
+                    if (DungeonManager.instance.GetShouldCheckValidators())
                     {
-                        isValid = false;
-                        if (DungeonManager.instance.GetShouldCheckValidators())
-                            Debug.LogWarning("Validators Are Overlapping");
+                        Debug.LogWarning("Validators Are Overlapping");
                     }
-
+                }
+            }
+            
         }
     }
 }

@@ -183,14 +183,32 @@ namespace ATDungeon.Utility
         //From: https://answers.unity.com/questions/475066/how-to-get-a-random-point-on-navmesh.html
         public Vector3 RandomNavmeshLocation(float radius, Vector3 startPos)
         {
+            Debug.Log("Attempting To Get Random NavMesh Location With Radius Of [" + radius + "] From Center: " + startPos);
             Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+            randomDirection = new Vector3(randomDirection.x, Mathf.Abs(randomDirection.y), randomDirection.z); // Abs of Y so position is never under the room
             randomDirection += startPos;
-            NavMeshHit hit;
-            Vector3 finalPosition = Vector3.zero;
-            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+            Debug.Log("Random Direction: " + randomDirection);
+            
+            Vector3 randNavLocation = randomDirection;
+            RaycastHit rayHit;
+            if (Physics.Raycast(randomDirection, Vector3.down, out rayHit, 15f))
             {
-                finalPosition = hit.position;
+                randNavLocation = rayHit.point;
+                Debug.Log("Random Nav Location: " + randNavLocation);
             }
+            
+            NavMeshHit navHit;
+            Vector3 finalPosition = Vector3.zero;
+            if (NavMesh.SamplePosition(randNavLocation, out navHit, radius, 1))
+            {
+                Debug.Log("Final Position Was On NavMesh!");
+                finalPosition = navHit.position;
+            }
+            else
+            {
+                Debug.LogWarning("Final Position Was Not On The NavMesh, Therefore Returning 0");
+            }
+            
             return finalPosition;
         }
 
